@@ -192,20 +192,45 @@ if ("serviceWorker" in navigator) {
 exportPdfBtn.addEventListener("click", () => {
 
     const { jsPDF } = window.jspdf;
-
     const doc = new jsPDF();
 
-    doc.setFontSize(20);
+    let totalIncome = 0;
+    let totalExpenses = 0;
+
+    expenses.forEach(item => {
+        if (item.type === "income") {
+            totalIncome += item.amount;
+        } else {
+            totalExpenses += item.amount;
+        }
+    });
+
+    const balance = totalIncome - totalExpenses;
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
     doc.text("Expense Tracker Report", 20, 20);
 
-    let y = 40;
+    doc.setFontSize(11);
+    doc.text("Generated: " + new Date().toLocaleString(), 20, 30);
 
-    expenses.forEach(expense => {
+    doc.line(20, 35, 190, 35);
 
-        doc.setFontSize(12);
+    doc.setFontSize(14);
+    doc.text(`Balance: R${balance.toFixed(2)}`, 20, 45);
+    doc.text(`Income: R${totalIncome.toFixed(2)}`, 20, 55);
+    doc.text(`Expenses: R${totalExpenses.toFixed(2)}`, 20, 65);
+
+    doc.line(20, 72, 190, 72);
+
+    let y = 85;
+
+    expenses.forEach(item => {
+
+        doc.setFontSize(11);
 
         doc.text(
-            `${expense.type.toUpperCase()} | ${expense.category} | ${expense.description} | R${expense.amount.toFixed(2)}`,
+            `${item.type.toUpperCase()} | ${item.category} | ${item.description} | R${item.amount.toFixed(2)}`,
             20,
             y
         );
@@ -219,6 +244,6 @@ exportPdfBtn.addEventListener("click", () => {
 
     });
 
-    doc.save("Expense-Report.pdf");
+    doc.save("Expense-Tracker-Report.pdf");
 
 });
