@@ -189,3 +189,36 @@ if ("serviceWorker" in navigator) {
             .catch(err => console.log(err));
     });
 }
+exportPdfBtn.addEventListener("click", () => {
+
+    const { jsPDF } = window.jspdf;
+
+    const doc = new jsPDF();
+
+    doc.setFontSize(20);
+    doc.text("Expense Tracker Report", 20, 20);
+
+    let y = 40;
+
+    expenses.forEach(expense => {
+
+        doc.setFontSize(12);
+
+        doc.text(
+            `${expense.type.toUpperCase()} | ${expense.category} | ${expense.description} | R${expense.amount.toFixed(2)}`,
+            20,
+            y
+        );
+
+        y += 10;
+
+        if (y > 270) {
+            doc.addPage();
+            y = 20;
+        }
+
+    });
+
+    doc.save("Expense-Report.pdf");
+
+});
