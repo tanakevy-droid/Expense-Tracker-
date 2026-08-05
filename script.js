@@ -14,6 +14,7 @@ const budgetInput = document.getElementById("budget");
 const saveBudgetBtn = document.getElementById("save-budget");
 const progressBar = document.getElementById("progress-bar");
 const budgetInfo = document.getElementById("budget-info");
+const exportPdfBtn = document.getElementById("export-pdf");
 
 let monthlyBudget = Number(localStorage.getItem("budget")) || 0;
 budgetInput.value = monthlyBudget;
